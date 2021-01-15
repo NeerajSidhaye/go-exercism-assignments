@@ -11,17 +11,14 @@ func IsIsogram(s string) bool {
 
 	i := 0
 	matchCount := 0
-	var isoGramFlag bool = true
-	
+	isoGramFlag := true
+
 	s = strings.ToLower(s)
 
-	if strings.ContainsAny(s, "-") {
-		s = strings.ReplaceAll(s, "-", "")
-	}
-	if strings.ContainsAny(s, " ") {
-		s = strings.ReplaceAll(s, " ", "")
-	}
-	// by now, the input string will have all in lowercase and with NO hyphen or space characters in it.
+	s = strings.ReplaceAll(s, "-", "")
+
+	s = strings.ReplaceAll(s, " ", "")
+
 	for ; i < len(s); i++ {
 
 		j := 0
@@ -38,5 +35,5 @@ func IsIsogram(s string) bool {
 		}
 		matchCount = 0
 	}
-    return isoGramFlag
+	return isoGramFlag
 }
