@@ -1,38 +1,24 @@
 package hamming
 
 import (
-	"fmt"
+	"errors"
 )
 
 //Distance : calculating Haming Distance
 func Distance(a, b string) (int, error) {
 
-	
-	if len(a) == len(b) {  
+	if len(a) == len(b) {
 
 		var hamingDistanceCount int
 
-		runeA := []rune(a)
-		runeB := []rune(b)
+		i := 0
+		for ; i < len(a); i++ {
 
-		for i := range runeA {
-
-			if runeA[i] != runeB[i] {
-				hamingDistanceCount ++
+			if a[i] != b[i] {
+				hamingDistanceCount++
 			}
 		}
 		return hamingDistanceCount, nil
-	} 
-		 return 0, &argError{0, true}
-	
-
-}
-
-func (e *argError) Error() string {
-	return fmt.Sprintf("%-d %t", e.count, e.er)
-}
-
-type argError struct {
-	count int 
-	er bool
+	}
+	return 0, errors.New("input strings not equal")
 }
