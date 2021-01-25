@@ -1,84 +1,44 @@
 package luhn
 
 import (
-	"fmt"
-	"regexp"
 	"strconv"
 	"strings"
 )
 
-//Valid : luhn algorithm
+//Valid :
 func Valid(input string) bool {
 
-	// replacing any space from between the chars or leading & trailing spaces.
 	input = strings.ReplaceAll(input, " ", "")
 
-	// input with lengh 1 or less is not valid.
-	if len(input) <= 1 {
+	if len(input) < 2 {
 		return false
 	}
 
-	regexp, _ := regexp.Compile("[0-9]+")
-	matchInput := regexp.MatchString(input)
-
-	if !matchInput {
-		return false
+	doubleIndex := 0
+	if len(input) %2 !=0 {
+		doubleIndex = 1
 	}
 
-	//the int slice to hold the digits from input string.
-	numSlice := make([]int, 0, len(input))
+	sum :=0
+	for i, val := range input {
 
-	for i, _ := range input {
-
-		// converting to int from slice rune of char ( string is rune of chars )
-		num, err := strconv.Atoi(input[i : i+1])
-		if err != nil {
-			fmt.Println("invalid input - not a number-", err, input[i:i+1])
+		digit, err := strconv.Atoi(string(val))
+		if err!=nil {
 			return false
 		}
-		// adding each int to slice of int
-		numSlice = append(numSlice, num)
 
-	}
-
-	// int slice to hold the digits after doubling every 2nd digit from right
-	secondNumHolderSlice := make([]int, 0, len(numSlice))
-
-	numSliceSecondIndexholder := len(numSlice) - 2
-
-	for numSliceSecondIndexholder >= 0 {
-		secondValue := numSlice[numSliceSecondIndexholder]
-		secondValue = secondValue * 2
-		if secondValue > 9 {
-			secondValue = secondValue - 9
+		if doubleIndex == i {
+			digit = digit * 2
+			if digit > 9 {
+				digit = digit - 9 
+			}
+			doubleIndex = doubleIndex + 2
 		}
-		secondNumHolderSlice = append(secondNumHolderSlice, secondValue)
-		numSliceSecondIndexholder = numSliceSecondIndexholder - 2
+
+		sum = sum + digit
 	}
 
-	// slice to hold original number at other place ( non-second digit )
-	originalNumSlice := make([]int, 0, len(numSlice))
+	return (sum%10)==0
 
-	nonSecondIndex := len(numSlice) - 1
-
-	for nonSecondIndex >= 0 {
-		originalNumSlice = append(originalNumSlice, numSlice[nonSecondIndex])
-		nonSecondIndex = nonSecondIndex - 2
-	}
-
-	numSecondHolderTotal := 0
-	for _, val := range secondNumHolderSlice {
-		numSecondHolderTotal = numSecondHolderTotal + val
-	}
-
-	originalNumSliceTotal := 0
-	for _, val := range originalNumSlice {
-		originalNumSliceTotal = originalNumSliceTotal + val
-	}
-	finalTotal := numSecondHolderTotal + originalNumSliceTotal
-
-	if (finalTotal % 10) == 0 {
-		return true
-	}
-	return false
 }
+
