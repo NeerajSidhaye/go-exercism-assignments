@@ -1,1 +1,1 @@
-### Sovling [Exercism](https://exercism.io/tracks/go) Go assignments
+### Solving [Exercism](https://exercism.io/tracks/go) Go assignments
